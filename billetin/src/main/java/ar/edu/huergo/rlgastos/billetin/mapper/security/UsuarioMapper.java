@@ -10,7 +10,9 @@ import ar.edu.huergo.rlgastos.billetin.entity.security.Rol;
 import ar.edu.huergo.rlgastos.billetin.entity.security.Usuario;
 
 @Component
+
 public class UsuarioMapper {
+
     public UsuarioDTO toDTO(Usuario usuario) {
         if (usuario == null) return null;
         return new UsuarioDTO(
@@ -21,16 +23,13 @@ public class UsuarioMapper {
     }
 
     public List<UsuarioDTO> toDTOList(List<Usuario> usuarios) {
-        return usuarios.stream()
-                .map(this::toDTO)
-                .toList();
+        return usuarios.stream().map(this::toDTO).toList();
     }
 
-    public Usuario toEntity(RegistrarDTO registrarDTO) {
-        if (registrarDTO == null) return null;
+    public Usuario toEntity(RegistrarDTO dto) {
         Usuario usuario = new Usuario();
-        usuario.setNombre(registrarDTO.nombre());
-        usuario.setUsername(registrarDTO.username());
+        usuario.setNombre(dto.nombre());
+        usuario.setUsername(dto.username());
         return usuario;
     }
 }

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
+
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final RolRepository rolRepository;
@@ -25,17 +26,25 @@ public class UsuarioService {
     }
 
     public Usuario registrar(Usuario usuario, String password, String verificacionPassword) {
+
         if (!password.equals(verificacionPassword)) {
             throw new IllegalArgumentException("Las contraseñas no coinciden");
         }
+
         if (usuarioRepository.existsByUsername(usuario.getUsername())) {
-            throw new IllegalArgumentException("El nombre de usuario ya está en uso");
+            throw new IllegalArgumentException("El username ya está en uso");
         }
 
         usuario.setPassword(passwordEncoder.encode(password));
-        Rol rolCliente = rolRepository.findByNombre("CLIENTE").orElseThrow(() -> new IllegalArgumentException("Rol 'CLIENTE' no encontrado"));
+
+        Rol rolCliente = rolRepository.findByNombre("CLIENTE")
+                .orElseThrow(() -> new IllegalArgumentException("No existe rol CLIENTE"));
+
         usuario.setRoles(Set.of(rolCliente));
+
         return usuarioRepository.save(usuario);
     }
 }
+
+
 
